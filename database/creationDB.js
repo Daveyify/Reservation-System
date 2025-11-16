@@ -1,5 +1,3 @@
-const sqlite3 = require('sqlite3').verbose();
-
 const tables =
 [
     `CREATE TABLE IF NOT EXISTS user (
@@ -14,14 +12,14 @@ const tables =
     );`,
 
     `CREATE TABLE IF NOT EXISTS category (
-    idcategory INT PRIMARY KEY NOT NULL,
+    idcategory INTEGER PRIMARY KEY NOT NULL,
     nameCategory TEXT NOT NULL
     );`,
 
     `CREATE TABLE IF NOT EXISTS device (
     reference INT PRIMARY KEY NOT NULL,
     name TEXT NOT NULL,
-    brand TEXT NOT NULL,
+    brand TEXT NOT NULL, 
     available TINYINT NOT NULL,
     category_idcategory INT NOT NULL,
     FOREIGN KEY (category_idcategory)
@@ -31,7 +29,7 @@ const tables =
     );`,
 
     `CREATE TABLE IF NOT EXISTS reservation(
-    idreservation INT PRIMARY KEY NOT NULL,
+    idreservation INTEGER PRIMARY KEY NOT NULL,
     beginDate DATETIME NOT NULL,
     endDate DATETIME NOT NULL,
     status TEXT,

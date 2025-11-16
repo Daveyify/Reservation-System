@@ -24,7 +24,7 @@ const fillDatabase = [`
         (7, 'Memory Cards'),
         (8, 'Batteries'),
         (9, 'Drones'),
-        (10, 'Accesorios');
+        (10, 'Accesories');
     `,
 
     `INSERT INTO device (reference, name, brand, available, category_idcategory) VALUES
