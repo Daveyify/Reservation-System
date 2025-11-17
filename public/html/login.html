@@ -5,27 +5,31 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reservation system</title>
-    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
     <div class="body-form">
         <h1>DEVICE RESERVATION</h1>
         <div class="div-form">
-            <form class="form">
+            <form class="form" id="loginForm">
                 <div class="title">Sign In,<br><span>to continue</span></div>
-                <input class="input" name="email" placeholder="Email" type="email">
-                <input class="input" name="password" placeholder="Password" type="password">
-                <button class="button-confirm">
-                    <a href="/public/html/main.html">Sign In →</a>
+                <p id="responseMessage"></p>
+                <input class="input" id="emailLogin" name="emailLogin" placeholder="Email" type="email">
+                <input class="input" id="passwordLogin" name="passwordLogin" placeholder="Password" type="password">
+                <button class="button-confirm" id="SignInBtn">
+                    <a>Sign In →</a>
                 </button>
                 <p>You don't have an account?</p>
-                <button class="button-confirm">
-                    <a href="/public/html/register.html">Register →</a>
+                <button class="button-confirm" id="indexRegister">
+                    <a>Register →</a>
                 </button>
             </form>
         </div>
     </div>
+
+    <script src="../js/buttons.js"></script>
+    <script src="../js/api.js"></script>
 </body>
 
 </html>

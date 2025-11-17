@@ -1,13 +1,15 @@
 const db = require('../services/sqliteConnection')
 const sqlite = require('../services/sqliteServices');
+const bcrypt = require('bcrypt');
 
 const express = require('express');
 const router = express.Router();
 
-router.post('/createUser', async (req, res) => {
+router.post('/users/create', async (req, res) => {
     try {
         const { iduser, email, password, name, lastName, phone } = req.body;
-        const result = await sqlite.createUser(iduser, email, password, name, lastName, phone);
+        const cryptedPassword = await bcrypt.hash(password, 10);
+        const result = await sqlite.createUser(iduser, email, cryptedPassword, name, lastName, phone);
         res.status(201).json({ message: 'User created successfully', userId: result });
     } catch (error) {
         console.error('Error created user:', error);
@@ -15,21 +17,37 @@ router.post('/createUser', async (req, res) => {
     }
 });
 
-router.get('/getUser', async (req, res) => {
+router.post('/users/login', async (req, res) => {
     try {
-        const { email, password } = req.params;
-        const user = await sqlite.getUserById(email, password);
-        if (user.length === 0) {
-            res.status(404).send("User not found or incorrect credentials");
-        } else {
-            res.status(201).json({ message: 'User logged in succesfully', user: user });
+        const { email, password } = req.body;
+
+        if(!email || !password){
+            return  res.status(400).send("Email and password are required");
+        }
+
+        const user = await sqlite.getUser({ email });
+
+        if (!user) {
+            res.status(404).send("User not found");
+        } 
+        
+        const validPassword = await bcrypt.compare(password, user.password);
+        
+        if (!validPassword) 
+        {
+            res.status(401).send("Invalid password");
+        } 
+        
+        else {
+            res.status(200).json({ message: 'User logged in succesfully', user: user });
         }
     } catch (error) {
-        res.status(500)
+        console.error(error);
+        res.status(500).json({ error: 'Failed to login', details: error.message });
     }
 });
 
-router.get('/availableDevices', async (req, res) => {
+router.get('/devices/available', async (req, res) => {
     try {
         const devices = await sqlite.getAllAvailableDevices();
         if (devices.length === 0) {
@@ -43,7 +61,7 @@ router.get('/availableDevices', async (req, res) => {
     }
 });
 
-router.post('/createReservation', async (req, res) => {
+router.post('/reservations/create', async (req, res) => {
     try {
         const { beginDate, endDate, status, user_iduser } = req.body;
         const result = await sqlite.createAReservation(beginDate, endDate, status, user_iduser);
@@ -54,7 +72,7 @@ router.post('/createReservation', async (req, res) => {
     }
 });
 
-router.post('/getUserReservations', async (req, res) => {
+router.post('/reservations/user/:id', async (req, res) => {
     try{
         const { user_iduser } = req.body;
         const reservations = await sqlite.getUserReservations(user_iduser);
@@ -68,3 +86,5 @@ router.post('/getUserReservations', async (req, res) => {
         res.status(500).json({ error: 'Failed to retrieve user reservations', details: error.message });
     }
 });
+
+module.exports = router;

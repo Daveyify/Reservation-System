@@ -18,11 +18,11 @@ function createUser({ iduser, email, password, name, lastname, phone }) {
     });
 }
 
-function getUser({email, password}) {
+function getUser({email}) {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT * FROM user WHERE email = ? AND password = ?`;
+        const sql = `SELECT * FROM user WHERE email = ?`;
 
-        db.get(sql, [email, password], (err, row) => {
+        db.get(sql, [email], (err, row) => {
             if (err) {
                 console.error('Error retrieving user:', err.message);
                 reject(err);
