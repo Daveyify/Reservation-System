@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reservation system</title>
-    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="../css/style.css">
 </head>
 
 <body>
@@ -15,16 +15,33 @@
         <button class="button-profile">
             <a href="reservation.html">My profile</a>
         </button>
-
         <div class="div-form">
-            <div class="form">
-                <div class="title">Make,<br><span>your reservations.</span></div>
-                <br>
-                <div class="info-devices"></div>
-            </div>
-        </div>
+            <form class="form" id="reservationForm">
+                <p id="responseMessage"></p>
+                <label class="label" for="deviceSelect">Select a device:</label>
+                <select class="input" id="deviceSelect" required>
+                    <option value="">Loading devices...</option>
+                </select>
 
-    </div>
+                <label class="label" for="beginDate">Start date:</label>
+                <input class="input" type="date" id="beginDate" required>
+
+                <label class="label" for="endDate">End date:</label>
+                <input class="input" type="date" id="endDate" required>
+
+                <label class="label" for="status">Status:</label>
+                <select class="input" id="status">
+                    <option value="confirmed">Confirmed</option>
+                    <option value="pending">Pending</option>
+                </select>
+
+                <label class="label" for="user">User ID:</label>
+                <input class="input" type="text" id="user" placeholder="User ID" required>
+
+                <button class="button-confirm" id="reserveBtn" type="submit">Create Reservation</button>
+            </form>
+        </div>
+        <script src="/js/reservations.js"></script>
 </body>
 
 </html>

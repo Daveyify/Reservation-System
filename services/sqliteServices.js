@@ -2,23 +2,23 @@ const db = require('./sqliteConnection');
 
 
 
-function createUser({ iduser, email, password, name, lastname, phone }) {
+function createUser({ iduser, email, password, name, lastName, phone }) {
     return new Promise((resolve, reject) => {
         const sql = `INSERT INTO user (iduser, email, password, name, lastName, phone, role, reputation) 
         VALUES (?, ?, ?, ?, ?, ?, "user", "excellent")`;
 
-        db.run(sql, [iduser, email, password, name, lastname, phone], function (err) {
+        db.run(sql, [iduser, email, password, name, lastName, phone], function (err) {
             if (err) {
                 console.error('Error creating user:', err.message);
                 reject(err);
             } else {
-                resolve({ iduser, email, password, name, lastname, phone });
+                resolve({ iduser, email, password, name, lastName, phone });
             }
         })
     });
 }
 
-function getUser({email}) {
+function getUser({ email }) {
     return new Promise((resolve, reject) => {
         const sql = `SELECT * FROM user WHERE email = ?`;
 
@@ -36,7 +36,7 @@ function getUser({email}) {
 
 function getAllAvailableDevices() {
     return new Promise((resolve, reject) => {
-        const sql = `SELECT * FROM device WHERE status = "available"`;
+        const sql = `SELECT * FROM device WHERE available = 1`;
         db.all(sql, [], (err, rows) => {
             if (err) {
                 console.error('Error retrieving devices:', err.message);
@@ -76,13 +76,37 @@ function getMyReservations(user_iduser) {
     });
 }
 
+function addDevicesToReservation(reservationId, devices) {
+    return new Promise((resolve, reject) => {
+        const sql = `INSERT INTO reservation_has_device (reservation_idreservation, device_reference) VALUES (?, ?)`;
+
+        const stmt = db.prepare(sql);
+
+        devices.forEach(ref => {
+            stmt.run([reservationId, ref], (err) => {
+                if (err) {
+                    console.error("Error inserting device:", err);
+                    reject(err);
+                }
+            });
+        });
+
+        stmt.finalize(err => {
+            if (err) reject(err);
+            else resolve({ reservationId, devices });
+        });
+    });
+}
+
+
 
 module.exports = {
     createUser,
     getUser,
     getAllAvailableDevices,
     createAReservation,
-    getMyReservations
+    getMyReservations,
+    addDevicesToReservation
 };
 
 

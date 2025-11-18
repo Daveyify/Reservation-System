@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Reservation system</title>
-    <link rel="stylesheet" href="/public/css/style.css">
+    <link rel="stylesheet" href="/css/style.css">
 </head>
 
 <body>
@@ -16,13 +16,28 @@
             <a href="reservation.html">My profile</a>
         </button>
 
-        <div class="div-form">
-            <div class="form">
-                <div class="title">Manage,<br><span>your reservations.</span></div>
-                <br>
-                <div class="info-reservations"></div>
-            </div>
-        </div>
+        <form id="userReservationForm">
+            <label>User ID:</label>
+            <input type="number" id="userIdInput" required>
+            <button type="submit">Load Reservations</button>
+        </form>
+
+        <br>
+
+        <h3>Reservations:</h3>
+        <table border="1">
+            <thead>
+                <tr>
+                    <th>ID</th>
+                    <th>Begin Date</th>
+                    <th>End Date</th>
+                    <th>Status</th>
+                </tr>
+            </thead>
+            <tbody id="reservationsTable"></tbody>
+        </table>
+
+        <p id="msg"></p>
 
     </div>
 </body>

@@ -1,5 +1,3 @@
-
-
 document.getElementById('SignInBtn').addEventListener('click', async function (event) {
     event.preventDefault();
 
@@ -30,4 +28,7 @@ document.getElementById('SignInBtn').addEventListener('click', async function (e
     }
 });
 
-document.getElementById('SignUpBtn').addEventListener('click', async function (event) {
+document.getElementById('indexRegister').addEventListener('click', async function (event) {
+    event.preventDefault();
+    window.location.href = '/html/register.html';
+});
